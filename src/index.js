@@ -10,19 +10,19 @@ class Room {
 			this.bookings.push(booking);
 		});
 	}
-	// isOccupied(date) {
-	// 	const dateToCheck = new Date(date).getTime();
-	// 	const isOccupied = this.bookings.some((booking) => {
-	// 		const bookingStart = new Date(booking.checkIn).getTime();
-	// 		const bookingEnd = new Date(booking.checkOut).getTime();
+	isOccupied(date) {
+		const dateToCheck = new Date(date).getTime();
+		const isOccupied = this.bookings.some((booking) => {
+			const bookingStart = new Date(booking.checkIn).getTime();
+			const bookingEnd = new Date(booking.checkOut).getTime();
 
-	// 		if (dateToCheck >= bookingStart && dateToCheck < bookingEnd) {
-	// 			return true;
-	// 		}
-	// 		return false;
-	// 	});
-	// 	return isOccupied;
-	// }
+			if (dateToCheck >= bookingStart && dateToCheck < bookingEnd) {
+				return true;
+			}
+			return false;
+		});
+		return isOccupied;
+	}
 	occupancyPercentage(startDate, endDate) {
 		const startDatee = new Date(startDate).getTime();
 		const endDatee = new Date(endDate).getTime();
