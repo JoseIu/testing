@@ -1,18 +1,3 @@
-// const bookings = [
-// 	{
-// 		checkIn: "2024-04-15",
-// 		checkOut: "2024-04-23",
-// 	},
-// 	{
-// 		checkIn: "2024-04-24",
-// 		checkOut: "2024-04-26",
-// 	},
-// 	{
-// 		checkIn: "2024-03-10",
-// 		checkOut: "2024-03-15",
-// 	},
-// ];
-
 class Room {
 	constructor({ name, rate, discount }) {
 		this.name = name;
@@ -20,24 +5,24 @@ class Room {
 		this.rate = rate;
 		this.discount = discount;
 	}
-	// setBookings(bookings = []) {
-	// 	bookings.forEach((booking) => {
-	// 		this.bookings.push(booking);
-	// 	});
-	// }
-	isOccupied(date) {
-		const dateToCheck = new Date(date).getTime();
-		const isOccupied = this.bookings.some((booking) => {
-			const bookingStart = new Date(booking.checkIn).getTime();
-			const bookingEnd = new Date(booking.checkOut).getTime();
-
-			if (dateToCheck >= bookingStart && dateToCheck < bookingEnd) {
-				return true;
-			}
-			return false;
+	setBookings(bookings = []) {
+		bookings.forEach((booking) => {
+			this.bookings.push(booking);
 		});
-		return isOccupied;
 	}
+	// isOccupied(date) {
+	// 	const dateToCheck = new Date(date).getTime();
+	// 	const isOccupied = this.bookings.some((booking) => {
+	// 		const bookingStart = new Date(booking.checkIn).getTime();
+	// 		const bookingEnd = new Date(booking.checkOut).getTime();
+
+	// 		if (dateToCheck >= bookingStart && dateToCheck < bookingEnd) {
+	// 			return true;
+	// 		}
+	// 		return false;
+	// 	});
+	// 	return isOccupied;
+	// }
 	occupancyPercentage(startDate, endDate) {
 		const startDatee = new Date(startDate).getTime();
 		const endDatee = new Date(endDate).getTime();
