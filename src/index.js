@@ -1,3 +1,4 @@
+const TIME = require("./constants/time");
 class Room {
 	constructor({ name, rate, discount }) {
 		this.name = name;
@@ -27,7 +28,10 @@ class Room {
 		const startDatee = new Date(startDate).getTime();
 		const endDatee = new Date(endDate).getTime();
 
-		const totalDays = (endDatee - startDatee) / (1000 * 60 * 60 * 24) + 1;
+		const totalDays =
+			(endDatee - startDatee) /
+				(TIME.SECOND * TIME.MINUTE * TIME.HOUR * TIME.DAY) +
+			1;
 		let daysOccupied = 0;
 
 		this.bookings.forEach((booking) => {
