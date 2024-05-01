@@ -1,4 +1,27 @@
 const TIME = require("./constants/time");
+
+const BOOKINS = [
+	{
+		checkInDate: "2024-04-28",
+		checkOutDate: "2024-04-30",
+	},
+	{
+		checkInDate: "2024-05-05",
+		checkOutDate: "2024-05-07",
+	},
+	{
+		checkInDate: "2024-05-12",
+		checkOutDate: "2024-05-14",
+	},
+	{
+		checkInDate: "2024-06-01",
+		checkOutDate: "2024-06-03",
+	},
+	{
+		checkInDate: "2024-06-10",
+		checkOutDate: "2024-06-12",
+	},
+];
 class Room {
 	constructor({ name, rate, discount }) {
 		this.name = name;
@@ -53,6 +76,10 @@ class Room {
 		// return { occupancyPercentage, daysOccupied, totalDays };
 		return Math.ceil(occupancyPercentage);
 	}
+	static totalOccupancyPercentage({ rooms, startDate, endDate }) {
+		console.log("hola", rooms);
+		const TOTAL_ROOMS = rooms.length; //100%
+	}
 }
 
 class Booking {
@@ -83,6 +110,14 @@ const booking2 = new Booking({
 
 room.setBookings([booking, booking2]);
 
-console.log(room.isOccupied("2024-04-28"));
+// console.log(room.isOccupied("2024-04-28"));
+
+const totalOcupacyPercetage = Room.totalOccupancyPercentage({
+	rooms: BOOKINS,
+	startDate: "2024-04-27",
+	endDate: "2024-04-30",
+});
+
+console.log(totalOcupacyPercetage);
 
 module.exports = { Room, Booking };
