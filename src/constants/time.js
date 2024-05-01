@@ -2,7 +2,7 @@ const TIME = {
 	SECOND: 1000,
 	MINUTE: 60,
 	HOUR: 60,
-	day: 24,
+	DAY: 24,
 };
 
 module.exports = TIME;
