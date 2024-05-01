@@ -1,32 +1,41 @@
-const bookings = [
-	{
-		checkIn: "2024-04-15",
-		checkOut: "2024-04-23",
-	},
-	{
-		checkIn: "2024-04-24",
-		checkOut: "2024-04-26",
-	},
-	{
-		checkIn: "2024-03-10",
-		checkOut: "2024-03-15",
-	},
-];
+// const bookings = [
+// 	{
+// 		checkIn: "2024-04-15",
+// 		checkOut: "2024-04-23",
+// 	},
+// 	{
+// 		checkIn: "2024-04-24",
+// 		checkOut: "2024-04-26",
+// 	},
+// 	{
+// 		checkIn: "2024-03-10",
+// 		checkOut: "2024-03-15",
+// 	},
+// ];
 
 class Room {
-	constructor({ name, bookings, rate, discount }) {
+	constructor({ name, rate, discount }) {
 		this.name = name;
-		this.bookings = bookings;
+		this.bookings = [];
 		this.rate = rate;
 		this.discount = discount;
 	}
+	// setBookings(bookings = []) {
+	// 	bookings.forEach((booking) => {
+	// 		this.bookings.push(booking);
+	// 	});
+	// }
 	isOccupied(date) {
 		const dateToCheck = new Date(date).getTime();
 		const isOccupied = this.bookings.some((booking) => {
-			const bookingDate = new Date(booking.checkIn).getTime();
-			return dateToCheck === bookingDate;
-		});
+			const bookingStart = new Date(booking.checkIn).getTime();
+			const bookingEnd = new Date(booking.checkOut).getTime();
 
+			if (dateToCheck >= bookingStart && dateToCheck < bookingEnd) {
+				return true;
+			}
+			return false;
+		});
 		return isOccupied;
 	}
 	occupancyPercentage(startDate, endDate) {
@@ -57,10 +66,34 @@ class Room {
 	}
 }
 
-const room = new Room({ name: "101", bookings, rate: 100, discount: 10 });
+class Booking {
+	constructor({ name, email, checkIn, checkOut, discount }) {
+		this.name = name;
+		this.email = email;
+		this.checkIn = checkIn;
+		this.checkOut = checkOut;
+		this.discount = discount;
+	}
+}
 
-console.log(room.occupancyPercentage("2024-04-21", "2024-04-23"));
+const room = new Room({ name: "101", rate: 100, discount: 10 });
+const booking = new Booking({
+	name: "Pepe",
+	email: "a@a.com",
+	checkIn: "2024-04-27",
+	checkOut: "2024-04-29",
+	discount: 10,
+});
+const booking2 = new Booking({
+	name: "Pepa",
+	email: "b@b.com",
+	checkIn: "2024-04-22",
+	checkOut: "2024-04-26",
+	discount: 10,
+});
 
-console.log(room.isOccupied("2024-04-24"));
+room.setBookings([booking, booking2]);
 
-module.exports = Room;
+console.log(room.isOccupied("2024-04-28"));
+
+module.exports = { Room, Booking };
