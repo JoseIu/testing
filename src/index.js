@@ -112,22 +112,30 @@ class Room {
 }
 
 class Booking {
-	constructor({ name, email, checkIn, checkOut, discount }) {
+	constructor({ name, email, checkIn, checkOut, discount, room }) {
 		this.name = name;
 		this.email = email;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
 		this.discount = discount;
+		this.room = room;
+	}
+	get fee() {
+		const baseFee = this.room.rate;
+		return baseFee;
 	}
 }
 
-const room = new Room({ name: "101", rate: 100, discount: 10 });
-const booking = new Booking({
+const room1 = new Room({ name: "101", rate: 100, discount: 10 });
+const room2 = new Room({ name: "102", rate: 150, discount: 15 });
+
+const booking1 = new Booking({
 	name: "Pepe",
 	email: "a@a.com",
 	checkIn: "2024-04-27",
 	checkOut: "2024-04-29",
 	discount: 10,
+	room: room1,
 });
 const booking2 = new Booking({
 	name: "Pepa",
@@ -135,11 +143,11 @@ const booking2 = new Booking({
 	checkIn: "2024-04-22",
 	checkOut: "2024-04-26",
 	discount: 10,
+	room: room2,
 });
 
-room.setBookings([booking, booking2]);
-
-// console.log(room.isOccupied("2024-04-28"));
+room1.setBookings([booking1, booking2]);
+// room2.setBookings([booking1, booking2]);
 
 const totalOcupacyPercetage = Room.totalOccupancyPercentage({
 	rooms: BOOKINS,
@@ -151,9 +159,13 @@ const availableRooms = Room.availableRooms({
 	startDate: "2024-04-27",
 	endDate: "2024-04-30",
 });
+// console.log(room.isOccupied("2024-04-28"));
 
-console.log(totalOcupacyPercetage);
+// console.log(totalOcupacyPercetage);
 
-console.log(availableRooms);
+// console.log(availableRooms);
+
+console.log(`Room ${booking1.fee}`);
+// console.log(`Room ${booking2.fee}`);
 
 module.exports = { Room, Booking };
