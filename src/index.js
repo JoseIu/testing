@@ -2,12 +2,12 @@ const TIME = require("./constants/time");
 
 const BOOKINS = [
 	{
-		checkInDate: "2024-04-28",
-		checkOutDate: "2024-04-30",
+		checkInDate: "2024-04-24",
+		checkOutDate: "2024-04-28",
 	},
 	{
-		checkInDate: "2024-05-05",
-		checkOutDate: "2024-05-07",
+		checkInDate: "2024-04-28",
+		checkOutDate: "2024-04-30",
 	},
 	{
 		checkInDate: "2024-05-12",
@@ -76,9 +76,23 @@ class Room {
 		// return { occupancyPercentage, daysOccupied, totalDays };
 		return Math.ceil(occupancyPercentage);
 	}
-	static totalOccupancyPercentage({ rooms, startDate, endDate }) {
-		console.log("hola", rooms);
+	static totalOccupancyPercentage({ rooms = [], startDate, endDate }) {
 		const TOTAL_ROOMS = rooms.length; //100%
+
+		const startDatee = new Date(startDate).getTime();
+		const endDatee = new Date(endDate).getTime();
+
+		const roomsOcupied = rooms.filter((room) => {
+			const roomStartDate = new Date(room.checkInDate).getTime();
+			const roomsEndDate = new Date(room.checkOutDate).getTime();
+			if (startDatee < roomsEndDate && endDatee >= roomStartDate) {
+				return room;
+			}
+		});
+
+		const totalOcupiedRooms = roomsOcupied.length;
+		return Math.ceil((totalOcupiedRooms * 100) / TOTAL_ROOMS);
+		// return { totalOcupiedRooms, TOTAL_ROOMS };
 	}
 }
 
