@@ -92,7 +92,22 @@ class Room {
 
 		const totalOcupiedRooms = roomsOcupied.length;
 		return Math.ceil((totalOcupiedRooms * 100) / TOTAL_ROOMS);
-		// return { totalOcupiedRooms, TOTAL_ROOMS };
+	}
+	static availableRooms({ rooms = [], startDate, endDate }) {
+		const startDatee = new Date(startDate).getTime();
+		const endDatee = new Date(endDate).getTime();
+
+		const roomsNotOcupied = rooms.filter((room) => {
+			const roomStartDate = new Date(room.checkInDate).getTime();
+			const roomsEndDate = new Date(room.checkOutDate).getTime();
+
+			if (startDatee < roomsEndDate && endDatee >= roomStartDate) {
+				return;
+			}
+			return room;
+		});
+
+		return roomsNotOcupied;
 	}
 }
 
@@ -131,7 +146,14 @@ const totalOcupacyPercetage = Room.totalOccupancyPercentage({
 	startDate: "2024-04-27",
 	endDate: "2024-04-30",
 });
+const availableRooms = Room.availableRooms({
+	rooms: BOOKINS,
+	startDate: "2024-04-27",
+	endDate: "2024-04-30",
+});
 
 console.log(totalOcupacyPercetage);
+
+console.log(availableRooms);
 
 module.exports = { Room, Booking };
