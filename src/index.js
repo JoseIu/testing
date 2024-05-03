@@ -2,16 +2,16 @@ const TIME = require("./constants/time");
 
 const BOOKINS = [
 	{
-		checkInDate: "2024-04-24",
-		checkOutDate: "2024-04-28",
+		checkInDate: "2024-04-20",
+		checkOutDate: "2024-04-25",
 	},
 	{
-		checkInDate: "2024-04-28",
-		checkOutDate: "2024-04-30",
+		checkInDate: "2024-04-15",
+		checkOutDate: "2024-04-19",
 	},
 	{
-		checkInDate: "2024-05-12",
-		checkOutDate: "2024-05-14",
+		checkInDate: "2024-03-9",
+		checkOutDate: "2024-03-13",
 	},
 	{
 		checkInDate: "2024-06-01",
@@ -121,12 +121,15 @@ class Booking {
 		this.room = room;
 	}
 	get fee() {
+		const baseDiscount = this.room.discount + this.discount;
 		const baseFee = this.room.rate;
-		return baseFee;
+
+		const totalDescount = (baseDiscount * baseFee) / 100;
+		return console.log(baseDiscount, baseFee, totalDescount);
 	}
 }
 
-const room1 = new Room({ name: "101", rate: 100, discount: 10 });
+const room1 = new Room({ name: "101", rate: 250, discount: 5 });
 const room2 = new Room({ name: "102", rate: 150, discount: 15 });
 
 const booking1 = new Booking({
@@ -159,13 +162,14 @@ const availableRooms = Room.availableRooms({
 	startDate: "2024-04-27",
 	endDate: "2024-04-30",
 });
-// console.log(room.isOccupied("2024-04-28"));
+console.log(room1.isOccupied("2024-04-28"));
 
 // console.log(totalOcupacyPercetage);
+console.log(room1.occupancyPercentage("2024-04-20", "2024-04-25"));
 
 // console.log(availableRooms);
 
-console.log(`Room ${booking1.fee}`);
+// console.log(`Room ${booking1.fee}`);
 // console.log(`Room ${booking2.fee}`);
 
 module.exports = { Room, Booking };
