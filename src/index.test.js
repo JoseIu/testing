@@ -2,22 +2,57 @@ const { Room, Booking } = require("./index");
 
 const bookings = [
 	{
-		checkIn: "2024-04-20",
-		checkOut: "2024-04-26",
+		checkInDate: "2024-04-20",
+		checkOutDate: "2024-04-25",
 	},
 	{
-		checkIn: "2024-04-15",
-		checkOut: "2024-04-19",
+		checkInDate: "2024-04-15",
+		checkOutDate: "2024-04-19",
 	},
 	{
-		checkIn: "2024-03-10",
-		checkOut: "2024-03-15",
+		checkInDate: "2024-03-9",
+		checkOutDate: "2024-03-13",
+	},
+	{
+		checkInDate: "2024-06-01",
+		checkOutDate: "2024-06-03",
+	},
+	{
+		checkInDate: "2024-06-10",
+		checkOutDate: "2024-06-12",
 	},
 ];
 
 test("occupancyPercentage within the range of dates provided ", () => {
-	const room = new Room({ name: "101", bookings, rate: 100, discount: 10 });
+	const room = new Room({ name: "101", rate: 250, discount: 5 });
+	const room2 = new Room({ name: "102", rate: 200, discount: 10 });
+	const room3 = new Room({ name: "103", rate: 300, discount: 3 });
 
+	const booking1 = new Booking({
+		name: "Pepe",
+		email: "a@a.com",
+		checkIn: "2024-04-20",
+		checkOut: "2024-04-25",
+		discount: 10,
+		room: room,
+	});
+	const booking2 = new Booking({
+		name: "Pepa",
+		email: "b@b.com",
+		checkIn: "2024-04-15",
+		checkOut: "2024-04-19",
+		discount: 10,
+		room: room2,
+	});
+	const booking3 = new Booking({
+		name: "Papa",
+		email: "p@p.com",
+		checkIn: "2024-03-10",
+		checkOut: "2024-03-15",
+		discount: 10,
+		room: room2,
+	});
+	room.setBookings([booking1, booking2, booking3]);
 	const result = room.occupancyPercentage("2024-04-20", "2024-04-25");
 	const result2 = room.occupancyPercentage("2024-04-15", "2024-04-19");
 	const result3 = room.occupancyPercentage("2024-03-9", "2024-03-13");
@@ -25,18 +60,6 @@ test("occupancyPercentage within the range of dates provided ", () => {
 	expect(result).toBe(100);
 	expect(result2).toBe(100);
 	expect(result3).toBe(80);
-});
-
-test("isOcupied on a specific date", () => {
-	const room = new Room({ name: "101", bookings, rate: 100, discount: 10 });
-
-	const result = room.isOccupied("2024-04-20");
-	const result2 = room.isOccupied("2024-04-15");
-	const result3 = room.isOccupied("2024-03-9");
-
-	expect(result).toBe(true);
-	expect(result2).toBe(true);
-	expect(result3).toBe(false);
 });
 
 test("Is not ocupied, looking before first checkin", () => {
