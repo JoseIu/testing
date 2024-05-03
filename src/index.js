@@ -67,7 +67,9 @@ class Room {
 				const overlapEnd = Math.min(endDatee, bookingEnd);
 
 				const overlapDays =
-					(overlapEnd - overlapStart) / (1000 * 60 * 60 * 24) + 1;
+					(overlapEnd - overlapStart) /
+						(TIME.SECOND * TIME.MINUTE * TIME.HOUR * TIME.DAY) +
+					1;
 
 				daysOccupied += overlapDays;
 			}
