@@ -1,28 +1,5 @@
 const { Room, Booking } = require("./index");
 
-const bookings = [
-	{
-		checkInDate: "2024-04-20",
-		checkOutDate: "2024-04-25",
-	},
-	{
-		checkInDate: "2024-04-15",
-		checkOutDate: "2024-04-19",
-	},
-	{
-		checkInDate: "2024-03-9",
-		checkOutDate: "2024-03-13",
-	},
-	{
-		checkInDate: "2024-06-01",
-		checkOutDate: "2024-06-03",
-	},
-	{
-		checkInDate: "2024-06-10",
-		checkOutDate: "2024-06-12",
-	},
-];
-
 test("occupancyPercentage within the range of dates provided ", () => {
 	const room = new Room({ name: "101", rate: 250, discount: 5 });
 	const room2 = new Room({ name: "102", rate: 200, discount: 10 });
@@ -50,7 +27,7 @@ test("occupancyPercentage within the range of dates provided ", () => {
 		checkIn: "2024-03-10",
 		checkOut: "2024-03-15",
 		discount: 10,
-		room: room2,
+		room: room3,
 	});
 	room.setBookings([booking1, booking2, booking3]);
 	const result = room.occupancyPercentage("2024-04-20", "2024-04-25");
@@ -59,7 +36,7 @@ test("occupancyPercentage within the range of dates provided ", () => {
 
 	expect(result).toBe(100);
 	expect(result2).toBe(100);
-	expect(result3).toBe(80);
+	expect(result3).toBe(75);
 });
 
 test("Is not ocupied, looking before first checkin", () => {
