@@ -1,3 +1,4 @@
+import { RoomInterface } from "./interfaces/Room.interface";
 const TIME = require("./constants/time");
 
 const BOOKINS = [
@@ -23,7 +24,11 @@ const BOOKINS = [
 	},
 ];
 class Room {
-	constructor({ name, rate, discount }) {
+	name: string;
+	bookings: any[];
+	rate: number;
+	discount: number;
+	constructor({ name, rate, discount }: RoomInterface) {
 		this.name = name;
 		this.bookings = [];
 		this.rate = rate;
@@ -34,7 +39,8 @@ class Room {
 			this.bookings.push(booking);
 		});
 	}
-	isOccupied(date) {
+	isOccupied(date: string) {
+		if (!date) return;
 		const dateToCheck = new Date(date).getTime();
 		const isOccupied = this.bookings.some((booking) => {
 			const bookingStart = new Date(booking.checkIn).getTime();
@@ -47,7 +53,7 @@ class Room {
 		});
 		return isOccupied;
 	}
-	occupancyPercentage(startDate, endDate) {
+	occupancyPercentage(startDate: string, endDate: string) {
 		const startDatee = new Date(startDate).getTime();
 		const endDatee = new Date(endDate).getTime();
 
@@ -150,28 +156,5 @@ const booking2 = new Booking({
 	discount: 10,
 	room: room2,
 });
-
-room1.setBookings([booking1, booking2]);
-// room2.setBookings([booking1, booking2]);
-
-const totalOcupacyPercetage = Room.totalOccupancyPercentage({
-	rooms: BOOKINS,
-	startDate: "2024-04-27",
-	endDate: "2024-04-30",
-});
-const availableRooms = Room.availableRooms({
-	rooms: BOOKINS,
-	startDate: "2024-04-27",
-	endDate: "2024-04-30",
-});
-console.log(room1.isOccupied("2024-04-28"));
-
-// console.log(totalOcupacyPercetage);
-console.log(room1.occupancyPercentage("2024-04-20", "2024-04-25"));
-
-// console.log(availableRooms);
-
-// console.log(`Room ${booking1.fee}`);
-// console.log(`Room ${booking2.fee}`);
 
 module.exports = { Room, Booking };
