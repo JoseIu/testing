@@ -1,47 +1,27 @@
-import { RoomInterface } from "./interfaces/Room.interface";
+import { BookingInterface, totalProps } from "./interfaces/Booking.Interface";
+import { RoomInterface, RoomProperties } from "./interfaces/Room.interface";
 const TIME = require("./constants/time");
 
-const BOOKINS = [
-	{
-		checkInDate: "2024-04-20",
-		checkOutDate: "2024-04-25",
-	},
-	{
-		checkInDate: "2024-04-15",
-		checkOutDate: "2024-04-19",
-	},
-	{
-		checkInDate: "2024-03-9",
-		checkOutDate: "2024-03-13",
-	},
-	{
-		checkInDate: "2024-06-01",
-		checkOutDate: "2024-06-03",
-	},
-	{
-		checkInDate: "2024-06-10",
-		checkOutDate: "2024-06-12",
-	},
-];
-class Room {
+export class Room implements RoomInterface {
 	name: string;
-	bookings: any[];
+	bookings?: BookingInterface[];
 	rate: number;
 	discount: number;
-	constructor({ name, rate, discount }: RoomInterface) {
+	constructor({ name, rate, bookings = [], discount }: RoomProperties) {
 		this.name = name;
-		this.bookings = [];
+		this.bookings = bookings;
 		this.rate = rate;
 		this.discount = discount;
 	}
-	setBookings(bookings = []) {
+	setBookings(bookings: BookingInterface[]) {
 		bookings.forEach((booking) => {
-			this.bookings.push(booking);
+			this.bookings?.push(booking);
 		});
 	}
-	isOccupied(date: string) {
+	isOccupied(date: string): boolean | void {
 		if (!date) return;
 		const dateToCheck = new Date(date).getTime();
+		if (!this.bookings) return console.log("No bookings");
 		const isOccupied = this.bookings.some((booking) => {
 			const bookingStart = new Date(booking.checkIn).getTime();
 			const bookingEnd = new Date(booking.checkOut).getTime();
@@ -63,64 +43,72 @@ class Room {
 			1;
 		let daysOccupied = 0;
 
-		this.bookings.forEach((booking) => {
+		this.bookings?.forEach((booking) => {
 			const bookingStart = new Date(booking.checkIn).getTime();
 			const bookingEnd = new Date(booking.checkOut).getTime();
 
-			if (startDatee <= bookingEnd && endDatee >= bookingStart) {
-				const overlapStart = Math.max(startDatee, bookingStart);
+			if (startDatee < bookingEnd && endDatee >= bookingStart) {
+				// const overlapStart = Math.max(startDatee, bookingStart);
 
-				const overlapEnd = Math.min(endDatee, bookingEnd);
+				// const overlapEnd = Math.min(endDatee, bookingEnd);
 
-				const overlapDays =
-					(overlapEnd - overlapStart) /
-						(TIME.SECOND * TIME.MINUTE * TIME.HOUR * TIME.DAY) +
-					1;
+				// const overlapDays =
+				// 	(overlapEnd - overlapStart) /
+				// 		(TIME.SECOND * TIME.MINUTE * TIME.HOUR * TIME.DAY) +
+				// 	1;
 
-				daysOccupied += overlapDays;
+				// daysOccupied += overlapDays;
+				if (this.isOccupied(startDate)) {
+					daysOccupied++;
+				}
 			}
 		});
-		const occupancyPercentage = (daysOccupied / totalDays) * 100;
-		// return { occupancyPercentage, daysOccupied, totalDays };
-		return Math.ceil(occupancyPercentage);
+		const totalOcupancy = (daysOccupied / totalDays) * 100;
+		return Math.ceil(totalOcupancy);
 	}
-	static totalOccupancyPercentage({ rooms = [], startDate, endDate }) {
+	static totalOccupancyPercentage({ rooms, startDate, endDate }: totalProps) {
 		const TOTAL_ROOMS = rooms.length; //100%
 
-		const startDatee = new Date(startDate).getTime();
-		const endDatee = new Date(endDate).getTime();
-
-		const roomsOcupied = rooms.filter((room) => {
-			const roomStartDate = new Date(room.checkInDate).getTime();
-			const roomsEndDate = new Date(room.checkOutDate).getTime();
-			if (startDatee < roomsEndDate && endDatee >= roomStartDate) {
-				return room;
-			}
+		let percetageAcc = 0;
+		rooms.forEach((room) => {
+			percetageAcc += room.occupancyPercentage(startDate, endDate);
 		});
 
-		const totalOcupiedRooms = roomsOcupied.length;
-		return Math.ceil((totalOcupiedRooms * 100) / TOTAL_ROOMS);
+		return Math.ceil(percetageAcc / TOTAL_ROOMS);
 	}
-	static availableRooms({ rooms = [], startDate, endDate }) {
+	static availableRooms({ rooms, startDate, endDate }: totalProps) {
 		const startDatee = new Date(startDate).getTime();
 		const endDatee = new Date(endDate).getTime();
 
-		const roomsNotOcupied = rooms.filter((room) => {
-			const roomStartDate = new Date(room.checkInDate).getTime();
-			const roomsEndDate = new Date(room.checkOutDate).getTime();
+		// const roomsNotOcupied = rooms.filter((room) => {
+		// 	const roomStartDate = new Date(room.checkInDate).getTime();
+		// 	const roomsEndDate = new Date(room.checkOutDate).getTime();
 
-			if (startDatee < roomsEndDate && endDatee >= roomStartDate) {
-				return;
-			}
-			return room;
-		});
+		// 	if (startDatee < roomsEndDate && endDatee >= roomStartDate) {
+		// 		return;
+		// 	}
+		// 	return room;
+		// });
 
-		return roomsNotOcupied;
+		// return roomsNotOcupied;
 	}
 }
 
-class Booking {
-	constructor({ name, email, checkIn, checkOut, discount, room }) {
+export class Booking {
+	name: string;
+	email: string;
+	checkIn: string;
+	checkOut: string;
+	discount: number;
+	room: RoomInterface;
+	constructor({
+		name,
+		email,
+		checkIn,
+		checkOut,
+		discount,
+		room,
+	}: BookingInterface) {
 		this.name = name;
 		this.email = email;
 		this.checkIn = checkIn;
@@ -146,7 +134,7 @@ const booking1 = new Booking({
 	checkIn: "2024-04-27",
 	checkOut: "2024-04-29",
 	discount: 10,
-	room: room1,
+	room: room1 as RoomInterface,
 });
 const booking2 = new Booking({
 	name: "Pepa",
@@ -154,7 +142,7 @@ const booking2 = new Booking({
 	checkIn: "2024-04-22",
 	checkOut: "2024-04-26",
 	discount: 10,
-	room: room2,
+	room: room2 as RoomInterface,
 });
-
-module.exports = { Room, Booking };
+room1.setBookings([booking1, booking2]);
+console.log(room1.bookings);
