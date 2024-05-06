@@ -1,15 +1,15 @@
+import TIME from "./constants/time";
 import { BookingInterface, totalProps } from "./interfaces/Booking.Interface";
 import { RoomInterface, RoomProperties } from "./interfaces/Room.interface";
-const TIME = require("./constants/time");
 
 export class Room implements RoomInterface {
 	name: string;
 	bookings?: BookingInterface[];
 	rate: number;
 	discount: number;
-	constructor({ name, rate, bookings = [], discount }: RoomProperties) {
+	constructor({ name, rate, discount }: RoomProperties) {
 		this.name = name;
-		this.bookings = bookings;
+		this.bookings = [];
 		this.rate = rate;
 		this.discount = discount;
 	}
@@ -39,30 +39,18 @@ export class Room implements RoomInterface {
 
 		const totalDays =
 			(endDatee - startDatee) /
-				(TIME.SECOND * TIME.MINUTE * TIME.HOUR * TIME.DAY) +
-			1;
+			(TIME.SECOND * TIME.MINUTE * TIME.HOUR * TIME.DAY);
 		let daysOccupied = 0;
 
-		this.bookings?.forEach((booking) => {
-			const bookingStart = new Date(booking.checkIn).getTime();
-			const bookingEnd = new Date(booking.checkOut).getTime();
-
-			if (startDatee < bookingEnd && endDatee >= bookingStart) {
-				// const overlapStart = Math.max(startDatee, bookingStart);
-
-				// const overlapEnd = Math.min(endDatee, bookingEnd);
-
-				// const overlapDays =
-				// 	(overlapEnd - overlapStart) /
-				// 		(TIME.SECOND * TIME.MINUTE * TIME.HOUR * TIME.DAY) +
-				// 	1;
-
-				// daysOccupied += overlapDays;
-				if (this.isOccupied(startDate)) {
-					daysOccupied++;
-				}
+		for (
+			let currentDate = startDatee;
+			currentDate < endDatee;
+			currentDate += TIME.DAY * TIME.HOUR * TIME.MINUTE * TIME.SECOND
+		) {
+			if (this.isOccupied(new Date(currentDate).toISOString())) {
+				daysOccupied++;
 			}
-		});
+		}
 		const totalOcupancy = (daysOccupied / totalDays) * 100;
 		return Math.ceil(totalOcupancy);
 	}
@@ -70,9 +58,9 @@ export class Room implements RoomInterface {
 		const TOTAL_ROOMS = rooms.length; //100%
 
 		let percetageAcc = 0;
-		rooms.forEach((room) => {
-			percetageAcc += room.occupancyPercentage(startDate, endDate);
-		});
+		// rooms.forEach((room) => {
+		// 	percetageAcc += room.occupancyPercentage(startDate, endDate);
+		// });
 
 		return Math.ceil(percetageAcc / TOTAL_ROOMS);
 	}
@@ -94,13 +82,13 @@ export class Room implements RoomInterface {
 	}
 }
 
-export class Booking {
+export class Booking implements BookingInterface {
 	name: string;
 	email: string;
 	checkIn: string;
 	checkOut: string;
 	discount: number;
-	room: RoomInterface;
+	room: RoomProperties;
 	constructor({
 		name,
 		email,
@@ -131,18 +119,26 @@ const room2 = new Room({ name: "102", rate: 150, discount: 15 });
 const booking1 = new Booking({
 	name: "Pepe",
 	email: "a@a.com",
-	checkIn: "2024-04-27",
-	checkOut: "2024-04-29",
+	checkIn: "2024-04-20",
+	checkOut: "2024-04-25",
 	discount: 10,
-	room: room1 as RoomInterface,
+	room: room1,
 });
 const booking2 = new Booking({
 	name: "Pepa",
 	email: "b@b.com",
-	checkIn: "2024-04-22",
-	checkOut: "2024-04-26",
+	checkIn: "2024-03-22",
+	checkOut: "2024-03-26",
 	discount: 10,
-	room: room2 as RoomInterface,
+	room: room2,
 });
 room1.setBookings([booking1, booking2]);
-console.log(room1.bookings);
+// console.log(room1.bookings);
+console.log(room1.occupancyPercentage("2024-04-20", "2024-04-25"));
+// const overlapStart = Math.max(startDatee, bookingStart);
+// const overlapEnd = Math.min(endDatee, bookingEnd);
+// const overlapDays =
+// 	(overlapEnd - overlapStart) /
+// 		(TIME.SECOND * TIME.MINUTE * TIME.HOUR * TIME.DAY) +
+// 	1;
+// daysOccupied += overlapDays;
