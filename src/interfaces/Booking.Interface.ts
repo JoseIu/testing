@@ -1,4 +1,4 @@
-import { RoomInterface } from "./Room.interface";
+import { RoomProperties } from "./Room.interface";
 
 export interface BookingInterface {
 	name: string;
@@ -6,11 +6,11 @@ export interface BookingInterface {
 	checkIn: string;
 	checkOut: string;
 	discount: number;
-	room: RoomInterface;
+	room: RoomProperties;
 }
 
 export interface totalProps {
-	rooms: RoomInterface[];
+	rooms: RoomProperties[];
 	startDate: string;
 	endDate: string;
 }
