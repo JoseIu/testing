@@ -11,6 +11,4 @@ interface RoomMethods {
 	isOccupied: (date: string) => boolean | void;
 	occupancyPercentage: (startDate: string, endDate: string) => number;
 }
-export interface RoomInterface extends RoomProperties, RoomMethods {
-	occupancyPercentage: (startDate: string, endDate: string) => number;
-}
+export interface RoomInterface extends RoomProperties, RoomMethods {}
