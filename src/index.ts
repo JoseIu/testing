@@ -57,28 +57,19 @@ export class Room implements RoomInterface {
 	static totalOccupancyPercentage({ rooms, startDate, endDate }: totalProps) {
 		const TOTAL_ROOMS = rooms.length; //100%
 
-		let percetageAcc = 0;
-		// rooms.forEach((room) => {
-		// 	percetageAcc += room.occupancyPercentage(startDate, endDate);
-		// });
+		let totalOccupancyPercentage = 0;
 
-		return Math.ceil(percetageAcc / TOTAL_ROOMS);
+		rooms.forEach((room) => {
+			totalOccupancyPercentage += room.occupancyPercentage(startDate, endDate);
+		});
+
+		return Math.ceil(totalOccupancyPercentage / TOTAL_ROOMS);
 	}
 	static availableRooms({ rooms, startDate, endDate }: totalProps) {
-		const startDatee = new Date(startDate).getTime();
-		const endDatee = new Date(endDate).getTime();
-
-		// const roomsNotOcupied = rooms.filter((room) => {
-		// 	const roomStartDate = new Date(room.checkInDate).getTime();
-		// 	const roomsEndDate = new Date(room.checkOutDate).getTime();
-
-		// 	if (startDatee < roomsEndDate && endDatee >= roomStartDate) {
-		// 		return;
-		// 	}
-		// 	return room;
-		// });
-
-		// return roomsNotOcupied;
+		const availableRooms = rooms.filter(
+			(room) => room.occupancyPercentage(startDate, endDate) !== 0
+		);
+		return availableRooms;
 	}
 }
 
@@ -113,8 +104,8 @@ export class Booking implements BookingInterface {
 	}
 }
 
-const room1 = new Room({ name: "101", rate: 250, discount: 5 });
-const room2 = new Room({ name: "102", rate: 150, discount: 15 });
+const room1: RoomInterface = new Room({ name: "101", rate: 250, discount: 5 });
+const room2: RoomInterface = new Room({ name: "102", rate: 150, discount: 15 });
 
 const booking1 = new Booking({
 	name: "Pepe",
@@ -133,12 +124,4 @@ const booking2 = new Booking({
 	room: room2,
 });
 room1.setBookings([booking1, booking2]);
-// console.log(room1.bookings);
-console.log(room1.occupancyPercentage("2024-04-20", "2024-04-25"));
-// const overlapStart = Math.max(startDatee, bookingStart);
-// const overlapEnd = Math.min(endDatee, bookingEnd);
-// const overlapDays =
-// 	(overlapEnd - overlapStart) /
-// 		(TIME.SECOND * TIME.MINUTE * TIME.HOUR * TIME.DAY) +
-// 	1;
-// daysOccupied += overlapDays;
+room2.setBookings([booking1, booking2]);
