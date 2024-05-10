@@ -1,19 +1,31 @@
-const { Room, Booking } = require("./index");
+import { Booking, Room } from ".";
 
 describe("isOccupied", () => {
 	test("Is not ocupied, looking before first checkin", () => {
 		const room = new Room({ name: "101", rate: 100, discount: 10 });
 		const booking1 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-01",
 			checkOut: "2024-01-03",
+			discount: 10,
+			room: room,
 		});
 		const booking2 = new Booking({
+			name: "Pepa",
+			email: "e@e.com",
 			checkIn: "2024-01-05",
 			checkOut: "2024-01-06",
+			discount: 10,
+			room: room,
 		});
 		const booking3 = new Booking({
+			name: "Pepa",
+			email: "e@e.com",
 			checkIn: "2024-01-12",
 			checkOut: "2024-02-20",
+			discount: 10,
+			room: room,
 		});
 		room.setBookings([booking1, booking2, booking3]);
 		expect(room.isOccupied("2023-12-10")).toBe(false);
@@ -22,20 +34,36 @@ describe("isOccupied", () => {
 	test("Is not ocupied, looking after last checkout", () => {
 		const room = new Room({ name: "101", rate: 100, discount: 10 });
 		const booking1 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-01",
 			checkOut: "2024-01-03",
+			discount: 10,
+			room: room,
 		});
 		const booking2 = new Booking({
+			name: "Pepa",
+			email: "e@e.com",
 			checkIn: "2024-01-05",
 			checkOut: "2024-01-06",
+			discount: 10,
+			room: room,
 		});
 		const booking3 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-06",
 			checkOut: "2024-01-09",
+			discount: 10,
+			room: room,
 		});
 		const booking4 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-12",
 			checkOut: "2024-02-20",
+			discount: 10,
+			room: room,
 		});
 		room.setBookings([booking1, booking2, booking3, booking4]);
 		expect(room.isOccupied("2024-03-01")).toBe(false);
@@ -44,20 +72,36 @@ describe("isOccupied", () => {
 	test("Is not ocupied, looking between two bookings, different day", () => {
 		const room = new Room({ name: "101", rate: 100, discount: 10 });
 		const booking1 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-01",
 			checkOut: "2024-01-03",
+			discount: 10,
+			room: room,
 		});
 		const booking2 = new Booking({
+			name: "Pepa",
+			email: "e@e.com",
 			checkIn: "2024-01-05",
 			checkOut: "2024-01-06",
+			discount: 10,
+			room: room,
 		});
 		const booking3 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-06",
 			checkOut: "2024-01-09",
+			discount: 10,
+			room: room,
 		});
 		const booking4 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-12",
 			checkOut: "2024-02-20",
+			discount: 10,
+			room: room,
 		});
 		room.setBookings([booking1, booking2, booking3, booking4]);
 		expect(room.isOccupied("2024-01-11")).toBe(false);
@@ -66,20 +110,36 @@ describe("isOccupied", () => {
 	test("Is not ocupied, looking between two bookings, same day", () => {
 		const room = new Room({ name: "101", rate: 100, discount: 10 });
 		const booking1 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-01",
 			checkOut: "2024-01-03",
+			discount: 10,
+			room: room,
 		});
 		const booking2 = new Booking({
+			name: "Pepa",
+			email: "e@e.com",
 			checkIn: "2024-01-05",
 			checkOut: "2024-01-06",
+			discount: 10,
+			room: room,
 		});
 		const booking3 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-06",
 			checkOut: "2024-01-09",
+			discount: 10,
+			room: room,
 		});
 		const booking4 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-12",
 			checkOut: "2024-02-20",
+			discount: 10,
+			room: room,
 		});
 		room.setBookings([booking1, booking2, booking3, booking4]);
 		expect(room.isOccupied("2024-01-03")).toBe(false);
@@ -88,20 +148,36 @@ describe("isOccupied", () => {
 	test("Is ocupied, first day of first bookin", () => {
 		const room = new Room({ name: "101", rate: 100, discount: 10 });
 		const booking1 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-01",
 			checkOut: "2024-01-03",
+			discount: 10,
+			room: room,
 		});
 		const booking2 = new Booking({
+			name: "Pepa",
+			email: "e@e.com",
 			checkIn: "2024-01-05",
 			checkOut: "2024-01-06",
+			discount: 10,
+			room: room,
 		});
 		const booking3 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-06",
 			checkOut: "2024-01-09",
+			discount: 10,
+			room: room,
 		});
 		const booking4 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-12",
 			checkOut: "2024-02-20",
+			discount: 10,
+			room: room,
 		});
 		room.setBookings([booking1, booking2, booking3, booking4]);
 		expect(room.isOccupied("2024-01-01")).toBe(true);
@@ -110,20 +186,36 @@ describe("isOccupied", () => {
 	test("Is ocupied, first day of last bookin", () => {
 		const room = new Room({ name: "101", rate: 100, discount: 10 });
 		const booking1 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-01",
 			checkOut: "2024-01-03",
+			discount: 10,
+			room: room,
 		});
 		const booking2 = new Booking({
+			name: "Pepa",
+			email: "e@e.com",
 			checkIn: "2024-01-05",
 			checkOut: "2024-01-06",
+			discount: 10,
+			room: room,
 		});
 		const booking3 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-06",
 			checkOut: "2024-01-09",
+			discount: 10,
+			room: room,
 		});
 		const booking4 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-12",
 			checkOut: "2024-02-20",
+			discount: 10,
+			room: room,
 		});
 		room.setBookings([booking1, booking2, booking3, booking4]);
 		expect(room.isOccupied("2024-01-12")).toBe(true);
@@ -131,20 +223,36 @@ describe("isOccupied", () => {
 	test("Is ocupied, middle day of first booking", () => {
 		const room = new Room({ name: "101", rate: 100, discount: 10 });
 		const booking1 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-01",
 			checkOut: "2024-01-03",
+			discount: 10,
+			room: room,
 		});
 		const booking2 = new Booking({
+			name: "Pepa",
+			email: "e@e.com",
 			checkIn: "2024-01-05",
 			checkOut: "2024-01-06",
+			discount: 10,
+			room: room,
 		});
 		const booking3 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-06",
 			checkOut: "2024-01-09",
+			discount: 10,
+			room: room,
 		});
 		const booking4 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-12",
 			checkOut: "2024-02-20",
+			discount: 10,
+			room: room,
 		});
 		room.setBookings([booking1, booking2, booking3, booking4]);
 		expect(room.isOccupied("2024-01-02")).toBe(true);
@@ -152,20 +260,36 @@ describe("isOccupied", () => {
 	test("Is ocupied, middle day of last booking", () => {
 		const room = new Room({ name: "101", rate: 100, discount: 10 });
 		const booking1 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-01",
 			checkOut: "2024-01-03",
+			discount: 10,
+			room: room,
 		});
 		const booking2 = new Booking({
+			name: "Pepa",
+			email: "e@e.com",
 			checkIn: "2024-01-05",
 			checkOut: "2024-01-06",
+			discount: 10,
+			room: room,
 		});
 		const booking3 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-06",
 			checkOut: "2024-01-09",
+			discount: 10,
+			room: room,
 		});
 		const booking4 = new Booking({
+			name: "Pepe",
+			email: "a@a.com",
 			checkIn: "2024-01-12",
 			checkOut: "2024-02-20",
+			discount: 10,
+			room: room,
 		});
 		room.setBookings([booking1, booking2, booking3, booking4]);
 		expect(room.isOccupied("2024-01-14")).toBe(true);
@@ -230,6 +354,7 @@ describe("occupancyPercentage", () => {
 		expect(result3).toBe(75);
 	});
 });
+describe("totalOccupancyPercentage", () => {});
 
 describe("availableRooms", () => {
 	const room = new Room({ name: "101", rate: 250, discount: 5 });
@@ -272,13 +397,12 @@ describe("availableRooms", () => {
 	room2.setBookings([booking1, booking2, booking3, booking4]);
 	room3.setBookings([booking1, booking2, booking3, booking4]);
 	room4.setBookings([booking1, booking2, booking3, booking4]);
-	test("should ", () => {
-		const availableRooms = Room.availableRooms({
+	test("should return 4", () => {
+		const availableRooms: Room[] = Room.availableRooms({
 			rooms: [room, room2, room3, room4],
 			startDate: "2024-04-20",
 			endDate: "2024-04-25",
 		});
-		// expect(availableRooms).toBe([room2, room3, room4]);
-		console.log(availableRooms);
+		expect(availableRooms.length).toBe(4);
 	});
 });
